@@ -1,3 +1,270 @@
-[gd_scene format=3 uid="uid://dp1phpkqkgtjv"]
+[gd_scene load_steps=21 format=3 uid="uid://dp1phpkqkgtjv"]
+
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="1_rr4hn"]
+[ext_resource type="Resource" path="res://terrain/data.hterrain" id="2_7tjde"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="3_2heer"]
+[ext_resource type="Texture2D" uid="uid://dgpjpiuofrjc2" path="res://assets/textures/Grass 11  .png" id="4_hr5pb"]
+[ext_resource type="Texture2D" uid="uid://d061b3n5sl0aj" path="res://assets/textures/Grass 13  .png" id="5_qiswl"]
+[ext_resource type="Texture2D" uid="uid://b2leul3rxivt0" path="res://assets/textures/Grass 15  .png" id="6_sbt2f"]
+[ext_resource type="PackedScene" uid="uid://dlpm3qyxte4r4" path="res://Player.tscn" id="7_sowb5"]
+[ext_resource type="PackedScene" uid="uid://dun020aeckpsr" path="res://tree_1.tscn" id="12_orwhw"]
+[ext_resource type="PackedScene" uid="uid://cxr5o0fgixefj" path="res://tree_2.tscn" id="13_u73lf"]
+[ext_resource type="PackedScene" uid="uid://c0tsawlsp622t" path="res://stone_plate.tscn" id="14_8t7tg"]
+[ext_resource type="LightmapGIData" uid="uid://d4mpw6h017oto" path="res://main.lmbake" id="14_bdep7"]
+[ext_resource type="PackedScene" uid="uid://cx7b4q3twafnu" path="res://cube.tscn" id="15_5biwx"]
+[ext_resource type="PackedScene" uid="uid://csw6bsk5kk8tt" path="res://pillar_1.tscn" id="16_2pfxe"]
+[ext_resource type="PackedScene" uid="uid://diuixtenl8fpy" path="res://pillar_2.tscn" id="17_xm0na"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ihyp2"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_qilqd"]
+sky_material = SubResource("ProceduralSkyMaterial_ihyp2")
+
+[sub_resource type="Environment" id="Environment_paxjq"]
+background_mode = 2
+sky = SubResource("Sky_qilqd")
+ambient_light_source = 1
+tonemap_mode = 3
+ssr_fade_in = 0.047796
+ssao_enabled = true
+glow_intensity = 6.32
+glow_strength = 1.62
+volumetric_fog_enabled = true
+adjustment_enabled = true
+
+[sub_resource type="Resource" id="Resource_w40jn"]
+script = ExtResource("3_2heer")
+mode = 0
+textures = [[ExtResource("4_hr5pb"), ExtResource("5_qiswl"), ExtResource("6_sbt2f")], [null, null, null]]
+
+[sub_resource type="SphereMesh" id="SphereMesh_kna6t"]
+radius = 0.01
+height = 0.02
+
+[sub_resource type="Curve" id="Curve_pd1td"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_paxjq")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+light_color = Color(1, 0.917647, 0.815686, 1)
+shadow_enabled = true
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("1_rr4hn")
+ambient_wind = 0.096
+map_scale = Vector3(0.2, 0.2, 0.2)
+centered = true
+_terrain_data = ExtResource("2_7tjde")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4Lite"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_w40jn")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale = 20
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = null
+shader_params/u_tile_reduction = null
+
+[node name="Player" parent="." instance=ExtResource("7_sowb5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.01692, -4.76837e-08, 11.3389)
+
+[node name="Trees" type="Node3D" parent="."]
+
+[node name="Tree1" parent="Trees" instance=ExtResource("12_orwhw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.4671, 0.908624, 15.0954)
+
+[node name="Tree2" parent="Trees" instance=ExtResource("13_u73lf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.64632, 0, 9.03869)
+
+[node name="Tree3" parent="Trees" instance=ExtResource("12_orwhw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.8376, 0.554748, 23.8854)
+
+[node name="Tree4" parent="Trees" instance=ExtResource("13_u73lf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 35.7763, 0.404042, 2.06884)
+
+[node name="Tree5" parent="Trees" instance=ExtResource("12_orwhw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.6209, 0, -20.9599)
+
+[node name="Tree6" parent="Trees" instance=ExtResource("12_orwhw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5445, 0, -6.79847)
+
+[node name="Tree7" parent="Trees" instance=ExtResource("13_u73lf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 31.1124, 0, -23.8582)
+
+[node name="Tree8" parent="Trees" instance=ExtResource("12_orwhw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.7433, 0, -5.88732)
+
+[node name="Tree9" parent="Trees" instance=ExtResource("13_u73lf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75847, 0, -16.0905)
+
+[node name="Tree10" parent="Trees" instance=ExtResource("12_orwhw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 13.6201, 0, -17.8744)
+
+[node name="Ruins" type="Node3D" parent="."]
+
+[node name="StonePlate" parent="Ruins" instance=ExtResource("14_8t7tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.11503, -9.53674e-08, 1.77743)
+
+[node name="StonePlate2" parent="Ruins" instance=ExtResource("14_8t7tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.08769, -9.53674e-08, 1.77743)
+
+[node name="StonePlate3" parent="Ruins" instance=ExtResource("14_8t7tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.061167, -9.53674e-08, 1.77743)
+
+[node name="StonePlate4" parent="Ruins" instance=ExtResource("14_8t7tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.45828, -9.53674e-08, 1.77743)
+
+[node name="StonePlate5" parent="Ruins" instance=ExtResource("14_8t7tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.44808, -9.53674e-08, 1.77743)
+
+[node name="StonePlate6" parent="Ruins" instance=ExtResource("14_8t7tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.11503, 0.386729, 0.596672)
+
+[node name="StonePlate7" parent="Ruins" instance=ExtResource("14_8t7tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.08769, 0.386729, 0.596672)
+
+[node name="StonePlate8" parent="Ruins" instance=ExtResource("14_8t7tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.061167, 0.386729, 0.596672)
+
+[node name="StonePlate9" parent="Ruins" instance=ExtResource("14_8t7tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.45828, 0.386729, 0.596672)
+
+[node name="StonePlate10" parent="Ruins" instance=ExtResource("14_8t7tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.44808, 0.386729, 0.596672)
+
+[node name="StonePlate11" parent="Ruins" instance=ExtResource("14_8t7tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.11503, 0.828663, -0.337107)
+
+[node name="StonePlate12" parent="Ruins" instance=ExtResource("14_8t7tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.08769, 0.828663, -0.337107)
+
+[node name="StonePlate13" parent="Ruins" instance=ExtResource("14_8t7tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.061167, 0.828663, -0.337107)
+
+[node name="StonePlate14" parent="Ruins" instance=ExtResource("14_8t7tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.45828, 0.828663, -0.337107)
+
+[node name="StonePlate15" parent="Ruins" instance=ExtResource("14_8t7tg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.44808, 0.828663, -0.337107)
+
+[node name="Cube" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.43806, -0.152704, -0.364132)
+
+[node name="Cube2" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.43806, 0, 1.63035)
+
+[node name="Cube3" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06831, -0.167345, -0.364132)
+
+[node name="Cube5" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.64417, 0.0985615, -2.43324)
+
+[node name="Cube11" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.46225, 0, -2.43324)
+
+[node name="Cube6" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.61365, 0, -2.43324)
+
+[node name="Cube7" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.589008, -0.143532, -2.43324)
+
+[node name="Cube8" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.40668, 0, -2.43324)
+
+[node name="Cube9" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42004, 0, -2.43324)
+
+[node name="Cube10" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.45303, -0.281126, -2.43324)
+
+[node name="Cube12" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.64417, 0, -4.45674)
+
+[node name="Cube13" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.46225, 0, -4.45674)
+
+[node name="Cube14" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 0.063435, 0.997986, 0, -0.997986, 0.063435, -2.61365, 0.646437, -3.59949)
+
+[node name="Cube15" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.589008, 0, -4.45674)
+
+[node name="Cube19" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(0.815067, 0, 0.579367, 0, 1, 0, -0.579367, 0, 0.815067, 0.185155, 1.43051e-06, -7.84277)
+
+[node name="Cube23" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(0.949085, 0, -0.31502, 0, 1, 0, 0.31502, 0, 0.949085, 7.49879, 1.43051e-06, -12.2612)
+
+[node name="Cube24" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(0.949085, 0, -0.31502, 0, 1, 0, 0.31502, 0, 0.949085, -3.73512, 1.43051e-06, -13.0929)
+
+[node name="Cube25" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(0.610007, 0, 0.792396, 0, 1, 0, -0.792396, 0, 0.610007, 4.05626, -0.902509, -16.8935)
+
+[node name="Cube22" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(0.635774, 0.625747, 0.451921, -0.510025, 0.780026, -0.362537, -0.579367, 0, 0.815067, 1.97307, -0.557892, -12.6582)
+
+[node name="Cube20" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(0.394306, 0.875194, 0.280281, -0.713342, 0.483771, -0.507058, -0.579367, 0, 0.815067, 4.17759, -4.76837e-07, -8.54003)
+
+[node name="Cube21" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(0.394351, 0.875325, 0.27981, -0.71358, 0.483535, -0.506948, -0.579042, 0.000248975, 0.815297, 4.15978, 0.0237622, -8.56114)
+
+[node name="Cube16" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.40668, 0, -4.45674)
+
+[node name="Cube17" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42004, 0, -4.45674)
+
+[node name="Cube18" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.45303, 0, -4.45674)
+
+[node name="Cube4" parent="Ruins" instance=ExtResource("15_5biwx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06831, 0, 1.63035)
+
+[node name="Pillar1" parent="Ruins" instance=ExtResource("16_2pfxe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.06162, 1.59948, 1.53549)
+
+[node name="Pillar5" parent="Ruins" instance=ExtResource("16_2pfxe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.42122, 1.5789, -4.5071)
+
+[node name="Pillar3" parent="Ruins" instance=ExtResource("17_xm0na")]
+transform = Transform3D(-0.114452, 0, -0.993429, 0, 1, 0, 0.993429, 0, -0.114452, 5.35321, 1.99784, 1.59059)
+
+[node name="Pillar4" parent="Ruins" instance=ExtResource("17_xm0na")]
+transform = Transform3D(0.0149013, -0.991488, 0.129342, -0.113477, -0.130197, -0.984973, 0.993429, -3.54218e-10, -0.114452, 16.4595, 1.26938, 1.51154)
+
+[node name="Pillar2" parent="Ruins" instance=ExtResource("16_2pfxe")]
+transform = Transform3D(0.961932, -0.273278, -0.00236101, 0, -0.00863927, 0.999963, -0.273288, -0.961896, -0.0083104, -6.0951, 0.333785, -6.37628)
+
+[node name="LightmapGI" type="LightmapGI" parent="."]
+visible = false
+light_data = ExtResource("14_bdep7")
+
+[node name="LightmapProbe" type="LightmapProbe" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.92127, 0)
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.83574, 0)
+amount = 200
+lifetime = 5.0
+mesh = SubResource("SphereMesh_kna6t")
+emission_shape = 3
+emission_box_extents = Vector3(10, 10, 10)
+spread = 42.56
+gravity = Vector3(0, -0.1, 0)
+initial_velocity_max = 40.54
+scale_amount_curve = SubResource("Curve_pd1td")

@@ -1,0 +1,110 @@
+[gd_resource type="VisualShader" load_steps=12 format=3 uid="uid://cylpcktcyef0y"]
+
+[ext_resource type="Texture2D" uid="uid://cr0mqyvtmhm48" path="res://assets/3d/Tree1IdMap.png" id="1_43mlp"]
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_dl1x4"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_727ni"]
+operator = 6
+
+[sub_resource type="VisualShaderNodeFloatConstant" id="VisualShaderNodeFloatConstant_4jlfv"]
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_8v4e7"]
+parameter_name = "Wood"
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_jbq6u"]
+parameter_name = "Leaves"
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_j415j"]
+source = 5
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_ovimf"]
+source = 5
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_v1pdv"]
+texture = ExtResource("1_43mlp")
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_8h4kb"]
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_t0kt7"]
+default_input_values = [0, Vector3(1, 1, 1), 1, Vector3(0, 0, 0)]
+operator = 1
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_back, diffuse_toon, specular_disabled;
+
+uniform sampler2D tex_frg_7;
+uniform sampler2D Wood;
+uniform sampler2D Leaves;
+
+
+
+void fragment() {
+// Texture2D:7
+	vec4 n_out7p0 = texture(tex_frg_7, UV);
+
+
+// VectorOp:9
+	vec3 n_in9p0 = vec3(1.00000, 1.00000, 1.00000);
+	vec3 n_out9p0 = n_in9p0 - vec3(n_out7p0.xyz);
+
+
+	vec4 n_out6p0;
+// Texture2D:6
+	n_out6p0 = texture(Wood, UV);
+
+
+// VectorOp:10
+	vec3 n_out10p0 = n_out9p0 * vec3(n_out6p0.xyz);
+
+
+	vec4 n_out5p0;
+// Texture2D:5
+	n_out5p0 = texture(Leaves, UV);
+
+
+// VectorOp:8
+	vec3 n_out8p0 = vec3(n_out5p0.xyz) * vec3(n_out7p0.xyz);
+
+
+// VectorOp:11
+	vec3 n_out11p0 = max(n_out10p0, n_out8p0);
+
+
+// FloatConstant:12
+	float n_out12p0 = 0.000000;
+
+
+// Output:0
+	ALBEDO = n_out11p0;
+	ROUGHNESS = n_out12p0;
+
+
+}
+"
+modes/diffuse = 3
+modes/specular = 2
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture2DParameter_8v4e7")
+nodes/fragment/2/position = Vector2(-720, 120)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture2DParameter_jbq6u")
+nodes/fragment/3/position = Vector2(-720, 340)
+nodes/fragment/5/node = SubResource("VisualShaderNodeTexture_j415j")
+nodes/fragment/5/position = Vector2(-460, 380)
+nodes/fragment/6/node = SubResource("VisualShaderNodeTexture_ovimf")
+nodes/fragment/6/position = Vector2(-460, 160)
+nodes/fragment/7/node = SubResource("VisualShaderNodeTexture_v1pdv")
+nodes/fragment/7/position = Vector2(-460, 580)
+nodes/fragment/8/node = SubResource("VisualShaderNodeVectorOp_8h4kb")
+nodes/fragment/8/position = Vector2(-100, 440)
+nodes/fragment/9/node = SubResource("VisualShaderNodeVectorOp_t0kt7")
+nodes/fragment/9/position = Vector2(-260, 340)
+nodes/fragment/10/node = SubResource("VisualShaderNodeVectorOp_dl1x4")
+nodes/fragment/10/position = Vector2(-100, 220)
+nodes/fragment/11/node = SubResource("VisualShaderNodeVectorOp_727ni")
+nodes/fragment/11/position = Vector2(80, 300)
+nodes/fragment/12/node = SubResource("VisualShaderNodeFloatConstant_4jlfv")
+nodes/fragment/12/position = Vector2(100, 460)
+nodes/fragment/connections = PackedInt32Array(3, 0, 5, 2, 2, 0, 6, 2, 5, 0, 8, 0, 7, 0, 8, 1, 7, 0, 9, 1, 9, 0, 10, 0, 6, 0, 10, 1, 10, 0, 11, 0, 8, 0, 11, 1, 11, 0, 0, 0, 12, 0, 0, 3)

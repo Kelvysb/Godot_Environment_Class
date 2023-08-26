@@ -1,0 +1,45 @@
+[gd_resource type="ShaderMaterial" load_steps=8 format=3 uid="uid://cd5vcy8ewr7ss"]
+
+[ext_resource type="Shader" uid="uid://cylpcktcyef0y" path="res://TreeShader.tres" id="1_s3oqg"]
+
+[sub_resource type="Gradient" id="Gradient_b7wtc"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.434783, 0.826087)
+colors = PackedColorArray(0, 0.109804, 0, 1, 0, 0.0747, 4.81308e-08, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_aapuu"]
+noise_type = 2
+frequency = 0.21
+cellular_jitter = -3.605
+cellular_return_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_fwsr6"]
+width = 1024
+height = 1024
+seamless = true
+color_ramp = SubResource("Gradient_b7wtc")
+noise = SubResource("FastNoiseLite_aapuu")
+
+[sub_resource type="Gradient" id="Gradient_k1y8d"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.695652, 0.923913)
+colors = PackedColorArray(0.168887, 1.44392e-07, 3.60981e-08, 1, 0.117643, 6.50517e-08, 3.91062e-08, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_krnsd"]
+noise_type = 2
+frequency = 0.05
+fractal_type = 0
+cellular_jitter = 0.475
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_wcbs5"]
+width = 2048
+height = 2048
+seamless = true
+color_ramp = SubResource("Gradient_k1y8d")
+noise = SubResource("FastNoiseLite_krnsd")
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_s3oqg")
+shader_parameter/Wood = SubResource("NoiseTexture2D_wcbs5")
+shader_parameter/Leaves = SubResource("NoiseTexture2D_fwsr6")
